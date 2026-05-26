@@ -173,13 +173,48 @@ function App() {
         </div>
       )}
 
-      {tab === "tabla" && (
-        <div className="card">
-          <h2>Tabla de posiciones</h2>
-          <p>1. Admin — 0 puntos</p>
-          <p>2. Demo User — 0 puntos</p>
-        </div>
-      )}
+{tab === "tabla" && (
+  <div className="card">
+    <h2>🏆 Tabla de posiciones</h2>
+
+    <div style={{marginTop:"20px", display:"grid", gap:"12px"}}>
+
+      <div style={{
+        display:"flex",
+        justifyContent:"space-between",
+        background:"#f4f4f4",
+        padding:"14px",
+        borderRadius:"12px"
+      }}>
+        <span>🥇 Admin</span>
+        <b>12 pts</b>
+      </div>
+
+      <div style={{
+        display:"flex",
+        justifyContent:"space-between",
+        background:"#f4f4f4",
+        padding:"14px",
+        borderRadius:"12px"
+      }}>
+        <span>🥈 Iván</span>
+        <b>9 pts</b>
+      </div>
+
+      <div style={{
+        display:"flex",
+        justifyContent:"space-between",
+        background:"#f4f4f4",
+        padding:"14px",
+        borderRadius:"12px"
+      }}>
+        <span>🥉 Tío Juan</span>
+        <b>4 pts</b>
+      </div>
+
+    </div>
+  </div>
+)}
 
       {tab === "memes" && (
         <div className="card">
