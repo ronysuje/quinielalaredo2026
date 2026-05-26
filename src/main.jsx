@@ -26,7 +26,7 @@ function calcPoints(pick, match){
 }
 
 function App(){
-  const [session,setSession]=useState({ user: { email: "admin@quiniela.com" } })
+  const [session,setSession]=useState({ user: { id: "00000000-0000-0000-0000-000000000001", email: "admin@quiniela.com" } })
 
   useEffect(()=>{ if(!supabase) return; supabase.auth.getSession().then(({data})=>setSession(data.session)); const {data:{subscription}}=supabase.auth.onAuthStateChange((_e,s)=>setSession(s)); return()=>subscription.unsubscribe();},[]);
   useEffect(()=>{ loadAll(); },[session]);
