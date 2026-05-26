@@ -26,7 +26,7 @@ function calcPoints(pick, match){
 }
 
 function App(){
-  const [session,setSession]=useState(null), [profile,setProfile]=useState(null), [matches,setMatches]=useState(demoMatches), [picks,setPicks]=useState({}), [leaders,setLeaders]=useState([]), [email,setEmail]=useState(''), [username,setUsername]=useState(''), [loading,setLoading]=useState(false), [notice,setNotice]=useState(''), [tab,setTab]=useState('picks');
+  const [session,setSession]=useState({ user: { email: "admin@quiniela.com" } })
 
   useEffect(()=>{ if(!supabase) return; supabase.auth.getSession().then(({data})=>setSession(data.session)); const {data:{subscription}}=supabase.auth.onAuthStateChange((_e,s)=>setSession(s)); return()=>subscription.unsubscribe();},[]);
   useEffect(()=>{ loadAll(); },[session]);
