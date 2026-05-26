@@ -284,7 +284,7 @@ function App() {
             const pick = picks[m.id] || { pick_a: 0, pick_b: 0 };
             return (
               <div className="card match" key={m.id}>
-                <small>{m.match_no} · {m.stage}</small>
+                <small> {m.match_no} · {m.group} </small>
 <p className="match-time">
   {m.match_date} • {m.match_time}
 </p>
