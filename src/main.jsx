@@ -1,72 +1,203 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {createRoot} from 'react-dom/client';
-import {createClient} from '@supabase/supabase-js';
-import {Trophy, Laugh, ShieldCheck, Users, Star, LogOut} from 'lucide-react';
-import './style.css';
+import React, { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
+import { createClient } from "@supabase/supabase-js";
+import "./style.css";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+const supabase =
+  supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 const demoMatches = [
-  {id:1, match_no:'M1', stage:'Grupo', team_a:'Mexico', team_b:'TBD', score_a:null, score_b:null, locked:false},
-  {id:2, match_no:'M2', stage:'Grupo', team_a:'Canada', team_b:'TBD', score_a:null, score_b:null, locked:false},
-  {id:3, match_no:'M11', stage:'Grupo', team_a:'TBD', team_b:'TBD', score_a:null, score_b:null, locked:false},
-  {id:4, match_no:'M70', stage:'Eliminatoria', team_a:'TBD', team_b:'TBD', score_a:null, score_b:null, locked:false},
+  { id: 1, match_no: "M1", stage: "Grupo", team_a: "México", team_b: "TBD", score_a: null, score_b: null },
+  { id: 2, match_no: "M2", stage: "Grupo", team_a: "Canadá", team_b: "TBD", score_a: null, score_b: null },
+  { id: 3, match_no: "M11", stage: "Grupo", team_a: "TBD", team_b: "TBD", score_a: null, score_b: null },
+  { id: 4, match_no: "M70", stage: "Eliminatoria", team_a: "TBD", team_b: "TBD", score_a: null, score_b: null },
 ];
 
-function winner(a,b){ if(a===b) return 'draw'; return a>b?'a':'b'; }
-function calcPoints(pick, match){
-  if(match.score_a===null || match.score_b===null) return 0;
-  let pts=0;
-  if(winner(pick.pick_a,pick.pick_b)===winner(match.score_a,match.score_b)) pts+=3;
-  if(Math.abs(pick.pick_a-pick.pick_b)===Math.abs(match.score_a-match.score_b)) pts+=1;
-  if(pick.pick_a===match.score_a && pick.pick_b===match.score_b) pts+=2;
-  return pts;
-}
+function App() {
+  const [user, setUser] = useState({
+    id: "admin-demo",
+    email: "admin@quiniela.com",
+    username: "Admin",
+  });
 
-function App(){
-  const [session,setSession]=useState({ user: { id: "00000000-0000-0000-0000-000000000001", email: "admin@quiniela.com" } })
+  const [matches, setMatches] = useState(demoMatches);
+  const [picks, setPicks] = useState({});
+  const [tab, setTab] = useState("picks");
+  const [message, setMessage] = useState("");
 
-  useEffect(()=>{},[])
-  useEffect(()=>{ loadAll(); },[session]);
+  useEffect(() => {
+    loadData();
+  }, []);
 
-  async function loadAll(){
-    if(!supabase){ setLeaders([{username:'Demo User', points:12},{username:'Tía campeona', points:9}]); return; }
-    const {data:m}=await supabase.from('matches').select('*').order('id'); if(m) setMatches(m);
-    if(session?.user){
-      const {data:prof}=await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
-      if(!prof){ await supabase.from('profiles').insert({id:session.user.id,email:session.user.email,username:session.user.email?.split('@')[0]}); }
-      setProfile(prof || {email:session.user.email, approved:false});
-      const {data:p}=await supabase.from('picks').select('*').eq('user_id',session.user.id); const map={}; (p||[]).forEach(x=>map[x.match_id]=x); setPicks(map);
+  async function loadData() {
+    if (supabase) {
+      const { data: matchData } = await supabase.from("matches").select("*").order("id");
+      if (matchData?.length) setMatches(matchData);
+
+      const { data: pickData } = await supabase
+        .from("picks")
+        .select("*")
+        .eq("user_id", user.id);
+
+      if (pickData?.length) {
+        const map = {};
+        pickData.forEach((p) => {
+          map[p.match_id] = {
+            pick_a: p.predicted_home ?? p.pick_a ?? 0,
+            pick_b: p.predicted_away ?? p.pick_b ?? 0,
+          };
+        });
+        setPicks(map);
+        return;
+      }
     }
-    const {data:all}=await supabase.from('picks').select('points,user_id,profiles(username)');
-    const sums={}; (all||[]).forEach(p=>{ const name=p.profiles?.username||'Jugador'; sums[name]=(sums[name]||0)+(p.points||0); });
-    setLeaders(Object.entries(sums).map(([username,points])=>({username,points})).sort((a,b)=>b.points-a.points));
+
+    const saved = localStorage.getItem("quiniela_picks");
+    if (saved) setPicks(JSON.parse(saved));
   }
 
-  async function signIn(e){ e.preventDefault(); setLoading(true); setNotice(''); if(!supabase){ setNotice('Demo: conecta Supabase para activar login real.'); setLoading(false); return; }
-    const {error}=await supabase.auth.signInWithOtp({email, options:{emailRedirectTo: window.location.origin}}); setNotice(error?error.message:'Te envié un link a tu email. Revisa inbox/spam.'); setLoading(false);
+  function updatePick(matchId, side, value) {
+    setPicks((prev) => ({
+      ...prev,
+      [matchId]: {
+        pick_a: prev[matchId]?.pick_a ?? 0,
+        pick_b: prev[matchId]?.pick_b ?? 0,
+        [side]: Number(value),
+      },
+    }));
   }
-  async function savePick(match, a, b){
-    const pick={user_id:session?.user?.id, match_id:match.id, pick_a:+a, pick_b:+b, points: calcPoints({pick_a:+a,pick_b:+b}, match)};
-    setPicks(prev=>({...prev,[match.id]:pick}));
-    if(supabase && session?.user && profile?.approved){ await supabase.from('picks').upsert(pick,{onConflict:'user_id,match_id'}); loadAll(); }
+
+  async function savePick(match) {
+    const pick = picks[match.id] || { pick_a: 0, pick_b: 0 };
+
+    localStorage.setItem(
+      "quiniela_picks",
+      JSON.stringify({
+        ...picks,
+        [match.id]: pick,
+      })
+    );
+
+    if (supabase) {
+      try {
+        await supabase.from("picks").upsert(
+          {
+            user_id: user.id,
+            match_id: match.id,
+            predicted_home: pick.pick_a,
+            predicted_away: pick.pick_b,
+            points_earned: 0,
+          },
+          { onConflict: "user_id,match_id" }
+        );
+      } catch (err) {
+        console.log("Supabase save failed, saved locally instead", err);
+      }
+    }
+
+    setMessage(`Pick guardado para ${match.match_no} ✅`);
+    setTimeout(() => setMessage(""), 2500);
   }
-  const total=useMemo(()=>Object.values(picks).reduce((s,p)=>s+(p.points||0),0),[picks]);
 
-  if(!session && supabase) return <div className="page center"><div className="card login"><h1>⚽ Quiniela Laredo 2026</h1><p>Predice marcadores, gana puntos y pelea por el pote.</p><form onSubmit={signIn}><input placeholder="Tu email" value={email} onChange={e=>setEmail(e.target.value)} required/><input placeholder="Username" value={username} onChange={e=>setUsername(e.target.value)}/><button disabled={loading}>Entrar con email</button></form><small>{notice}</small></div></div>;
+  function logout() {
+    setUser(null);
+    setMessage("Sesión cerrada");
+  }
 
-  return <div className="page"><header><div><h1>⚽ Quiniela Laredo 2026</h1><p>Amigos + familia + memes + bragging rights 🏆</p></div><button className="ghost" onClick={()=>supabase?.auth.signOut()}><LogOut size={16}/> Salir</button></header>
-    {profile && !profile.approved && <div className="alert"><ShieldCheck/> Tu cuenta está pendiente de aprobación manual. Ya puedes ver la app, pero tus picks reales se guardan cuando te aprueben.</div>}
-    <section className="stats"><div className="stat"><Trophy/> <b>{total}</b><span>Mis puntos</span></div><div className="stat"><Users/> <b>{leaders.length}</b><span>Jugadores</span></div><div className="stat"><Star/> <b>{matches.length}</b><span>Partidos</span></div></section>
-    <nav><button onClick={()=>setTab('picks')} className={tab==='picks'?'active':''}>Picks</button><button onClick={()=>setTab('tabla')} className={tab==='tabla'?'active':''}>Tabla</button><button onClick={()=>setTab('memes')} className={tab==='memes'?'active':''}>Memes</button><button onClick={()=>setTab('fame')} className={tab==='fame'?'active':''}>Hall of Fame</button></nav>
-    {tab==='picks' && <div className="grid">{matches.map(m=><MatchCard key={m.id} match={m} pick={picks[m.id]} savePick={savePick}/>)}</div>}
-    {tab==='tabla' && <div className="card"><h2>Tabla de posiciones</h2>{leaders.length?leaders.map((l,i)=><p className="leader" key={l.username}><b>#{i+1} {l.username}</b><span>{l.points} pts</span></p>):<p>Todavía no hay picks.</p>}</div>}
-    {tab==='memes' && <div className="card"><h2><Laugh/> Reacciones y memes</h2><div className="memes"><span>😂 “Yo sí sabía que ganaba México”</span><span>😭 “Me arruinó el gol al 90+7”</span><span>🤡 “Mi pick más seguro falló”</span><span>🔥 “Se prendió la quiniela”</span></div></div>}
-    {tab==='fame' && <div className="card"><h2>🏆 Hall of Fame</h2><p>2026: pendiente...</p><p>Pick más arriesgado: pendiente...</p><p>Mayor remontada: pendiente...</p></div>}
-  </div>;
+  function loginDemo() {
+    setUser({
+      id: "admin-demo",
+      email: "admin@quiniela.com",
+      username: "Admin",
+    });
+  }
+
+  if (!user) {
+    return (
+      <div className="page center">
+        <div className="card login">
+          <h1>⚽ Quiniela Laredo 2026</h1>
+          <p>Modo demo/admin temporal.</p>
+          <button onClick={loginDemo}>Entrar como Admin</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page">
+      <header>
+        <div>
+          <h1>⚽ Quiniela Laredo 2026</h1>
+          <p>Amigos + familia + memes + bragging rights 🏆</p>
+        </div>
+        <button className="ghost" onClick={logout}>Salir</button>
+      </header>
+
+      <section className="stats">
+        <div>🏆 <b>0</b> Mis puntos</div>
+        <div>👥 <b>2</b> Jugadores</div>
+        <div>⭐ <b>{matches.length}</b> Partidos</div>
+      </section>
+
+      {message && <div className="notice">{message}</div>}
+
+      <nav>
+        <button className={tab === "picks" ? "active" : ""} onClick={() => setTab("picks")}>Picks</button>
+        <button className={tab === "tabla" ? "active" : ""} onClick={() => setTab("tabla")}>Tabla</button>
+        <button className={tab === "memes" ? "active" : ""} onClick={() => setTab("memes")}>Memes</button>
+        <button className={tab === "fame" ? "active" : ""} onClick={() => setTab("fame")}>Hall of Fame</button>
+      </nav>
+
+      {tab === "picks" && (
+        <div className="grid">
+          {matches.map((m) => {
+            const pick = picks[m.id] || { pick_a: 0, pick_b: 0 };
+            return (
+              <div className="card match" key={m.id}>
+                <small>{m.match_no} · {m.stage}</small>
+                <h2>{m.team_a} vs {m.team_b}</h2>
+                <div className="score">
+                  <input type="number" value={pick.pick_a} onChange={(e) => updatePick(m.id, "pick_a", e.target.value)} />
+                  <span>-</span>
+                  <input type="number" value={pick.pick_b} onChange={(e) => updatePick(m.id, "pick_b", e.target.value)} />
+                </div>
+                <button onClick={() => savePick(m)}>Guardar pick</button>
+                <p>Resultado: {m.score_a ?? "—"} - {m.score_b ?? "—"}</p>
+                <p>Puntos: 0</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {tab === "tabla" && (
+        <div className="card">
+          <h2>Tabla de posiciones</h2>
+          <p>1. Admin — 0 puntos</p>
+          <p>2. Demo User — 0 puntos</p>
+        </div>
+      )}
+
+      {tab === "memes" && (
+        <div className="card">
+          <h2>Memes y reacciones 😂</h2>
+          <p>Próximamente: “el que puso 7-0”, “el que nunca le pega”, “la remontada imposible”.</p>
+        </div>
+      )}
+
+      {tab === "fame" && (
+        <div className="card">
+          <h2>Hall of Fame 🏆</h2>
+          <p>Campeón histórico: pendiente.</p>
+          <p>Pick más arriesgado: pendiente.</p>
+          <p>Mayor remontada: pendiente.</p>
+        </div>
+      )}
+    </div>
+  );
 }
-function MatchCard({match,pick,savePick}){ const [a,setA]=useState(pick?.pick_a??0), [b,setB]=useState(pick?.pick_b??0); return <div className="card match"><div className="badge">{match.match_no} · {match.stage}</div><h3>{match.team_a} vs {match.team_b}</h3><div className="score"><input type="number" min="0" value={a} onChange={e=>setA(e.target.value)}/><span>-</span><input type="number" min="0" value={b} onChange={e=>setB(e.target.value)}/></div><button onClick={()=>savePick(match,a,b)}>Guardar pick</button><small>Resultado: {match.score_a ?? '—'} - {match.score_b ?? '—'} · Puntos: {pick?.points||0}</small></div> }
 
-createRoot(document.getElementById('root')).render(<App/>);
+createRoot(document.getElementById("root")).render(<App />);
