@@ -9,126 +9,137 @@ const supabase =
   supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 const demoMatches = [
-  {
-    id: 1,
-    match_no: 'M1',
-    stage: 'Grupo',
-    team_a: 'México',
-    team_b: 'Japón',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 1,
+match_no: "M1",
+stage: "Grupo",
+team_a: "🇲🇽 México",
+team_b: "🇨🇭 Suiza",
+match_date: "11 Jun 2026",
+match_time: "7:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 2,
-    match_no: 'M2',
-    stage: 'Grupo',
-    team_a: 'USA',
-    team_b: 'Corea del Sur',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 2,
+match_no: "M2",
+stage: "Grupo",
+team_a: "🇨🇦 Canadá",
+team_b: "🇨🇲 Camerún",
+match_date: "12 Jun 2026",
+match_time: "2:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 3,
-    match_no: 'M3',
-    stage: 'Grupo',
-    team_a: 'Canadá',
-    team_b: 'Marruecos',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 3,
+match_no: "M3",
+stage: "Grupo",
+team_a: "🇺🇸 Estados Unidos",
+team_b: "🇯🇵 Japón",
+match_date: "12 Jun 2026",
+match_time: "8:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 4,
-    match_no: 'M4',
-    stage: 'Grupo',
-    team_a: 'Argentina',
-    team_b: 'Nigeria',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 4,
+match_no: "M4",
+stage: "Grupo",
+team_a: "🇧🇷 Brasil",
+team_b: "🇷🇸 Serbia",
+match_date: "13 Jun 2026",
+match_time: "5:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 5,
-    match_no: 'M5',
-    stage: 'Grupo',
-    team_a: 'Brasil',
-    team_b: 'Croacia',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 5,
+match_no: "M5",
+stage: "Grupo",
+team_a: "🇦🇷 Argentina",
+team_b: "🇪🇬 Egipto",
+match_date: "13 Jun 2026",
+match_time: "8:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 6,
-    match_no: 'M6',
-    stage: 'Grupo',
-    team_a: 'España',
-    team_b: 'Uruguay',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 6,
+match_no: "M6",
+stage: "Grupo",
+team_a: "🇫🇷 Francia",
+team_b: "🇰🇷 Corea del Sur",
+match_date: "14 Jun 2026",
+match_time: "1:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 7,
-    match_no: 'M7',
-    stage: 'Grupo',
-    team_a: 'Francia',
-    team_b: 'Senegal',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 7,
+match_no: "M7",
+stage: "Grupo",
+team_a: "🇩🇪 Alemania",
+team_b: "🇲🇦 Marruecos",
+match_date: "14 Jun 2026",
+match_time: "4:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 8,
-    match_no: 'M8',
-    stage: 'Grupo',
-    team_a: 'Alemania',
-    team_b: 'Suecia',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 8,
+match_no: "M8",
+stage: "Grupo",
+team_a: "🇪🇸 España",
+team_b: "🇺🇾 Uruguay",
+match_date: "14 Jun 2026",
+match_time: "8:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 9,
-    match_no: 'M9',
-    stage: 'Grupo',
-    team_a: 'Inglaterra',
-    team_b: 'Suiza',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 9,
+match_no: "M9",
+stage: "Grupo",
+team_a: "🇵🇹 Portugal",
+team_b: "🇺🇸 Estados Unidos",
+match_date: "15 Jun 2026",
+match_time: "6:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 10,
-    match_no: 'M10',
-    stage: 'Grupo',
-    team_a: 'Portugal',
-    team_b: 'Polonia',
-    score_a: null,
-    score_b: null,
-    locked: false
-  },
+{
+id: 10,
+match_no: "M10",
+stage: "Grupo",
+team_a: "🇳🇱 Países Bajos",
+team_b: "🇨🇴 Colombia",
+match_date: "15 Jun 2026",
+match_time: "9:00 PM CT",
+score_a: null,
+score_b: null
+},
 
-  {
-    id: 11,
-    match_no: 'M11',
-    stage: 'Grupo',
-    team_a: 'México',
-    team_b: 'Argentina',
-    score_a: null,
-    score_b: null,
-    locked: false
-  }
+{
+id: 11,
+match_no: "M11",
+stage: "Grupo",
+team_a: "🇲🇽 México",
+team_b: "🇦🇷 Argentina",
+match_date: "16 Jun 2026",
+match_time: "8:00 PM CT",
+score_a: null,
+score_b: null
+}
 ];
 
 function App() {
