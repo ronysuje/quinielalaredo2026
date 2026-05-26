@@ -285,8 +285,12 @@ function App() {
             return (
               <div className="card match" key={m.id}>
                 <small>{m.match_no} · {m.stage}</small>
-                <h2>{m.team_a} vs {m.team_b}</h2>
-                <div className="score">
+<p className="match-time">
+  {m.match_date} • {m.match_time}
+</p>
+
+<h2>{m.team_a} vs {m.team_b}</h2>
+                  <div className="score">
                   <input type="number" value={pick.pick_a} onChange={(e) => updatePick(m.id, "pick_a", e.target.value)} />
                   <span>-</span>
                   <input type="number" value={pick.pick_b} onChange={(e) => updatePick(m.id, "pick_b", e.target.value)} />
