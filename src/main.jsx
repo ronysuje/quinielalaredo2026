@@ -18,8 +18,8 @@ const demoMatches = [
     team_b: "🇿🇦 South Africa",
     match_date: "11 Jun 2026",
     match_time: "Pendiente CT",
-    score_a: null,
-    score_b: null,
+    score_a: 2,
+    score_b: 1,
   },
   {
     id: 2,
