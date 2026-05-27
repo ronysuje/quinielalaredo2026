@@ -1041,42 +1041,18 @@ function App() {
   <div className="card">
     <h2>🏆 Tabla de posiciones</h2>
 
-    <div style={{marginTop:"20px", display:"grid", gap:"12px"}}>
-
-      <div style={{
-        display:"flex",
-        justifyContent:"space-between",
-        background:"#f4f4f4",
-        padding:"14px",
-        borderRadius:"12px"
-      }}>
-        <span>🥇 Admin</span>
-        <b>12 pts</b>
-      </div>
-
-      <div style={{
-        display:"flex",
-        justifyContent:"space-between",
-        background:"#f4f4f4",
-        padding:"14px",
-        borderRadius:"12px"
-      }}>
-        <span>🥈 Iván</span>
-        <b>9 pts</b>
-      </div>
-
-      <div style={{
-        display:"flex",
-        justifyContent:"space-between",
-        background:"#f4f4f4",
-        padding:"14px",
-        borderRadius:"12px"
-      }}>
-        <span>🥉 Tío Juan</span>
-        <b>4 pts</b>
-      </div>
-
-    </div>
+    {[{
+      username: user.username,
+      points: Object.values(picks).reduce((acc, p) => {
+        return acc + (p.points || 0)
+      }, 0)
+    }]
+      .sort((a,b)=>b.points-a.points)
+      .map((u, i) => (
+        <p key={i}>
+          {i + 1}. {u.username} - {u.points} puntos
+        </p>
+      ))}
   </div>
 )}
 
