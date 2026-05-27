@@ -876,11 +876,7 @@ const demoMatches = [
 ];
 
 function App() {
-  const [user, setUser] = useState({
-    id: "admin-demo",
-    email: "admin@quiniela.com",
-    username: "Admin",
-  });
+ const [user, setUser] = useState(null);
 
   const [matches, setMatches] = useState(demoMatches);
   const [picks, setPicks] = useState({});
