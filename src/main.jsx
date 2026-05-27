@@ -1056,6 +1056,27 @@ function calcPoints(pick, match){
                 </div>
                 <button onClick={() => savePick(m)}>Guardar pick</button>
                 <p>Resultado: {m.score_a ?? "—"} - {m.score_b ?? "—"}</p>
+                <div style={{ marginTop:"8px", display:"flex", gap:"6px" }}>
+  <input
+    type="number"
+    placeholder="R1"
+    style={{ width:"55px" }}
+    onChange={(e) => {
+      m.score_a = Number(e.target.value)
+      setMatches([...matches])
+    }}
+  />
+
+  <input
+    type="number"
+    placeholder="R2"
+    style={{ width:"55px" }}
+    onChange={(e) => {
+      m.score_b = Number(e.target.value)
+      setMatches([...matches])
+    }}
+  />
+</div>
                 <p>Puntos: {calcPoints(pick, m)}</p>
               </div>
             );
