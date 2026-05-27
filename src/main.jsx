@@ -934,6 +934,10 @@ function winner(a,b){
 }
 
 function calcPoints(pick, match){
+  const pickA = Number(pick.pick_a);
+  const pickB = Number(pick.pick_b);
+  const scoreA = Number(match.score_a);
+  const scoreB = Number(match.score_b);
 
   if(match.score_a === null || match.score_b === null){
     return 0;
@@ -941,17 +945,11 @@ function calcPoints(pick, match){
 
   let pts = 0;
 
-  if(
-    winner(pick.pick_a, pick.pick_b) ===
-    winner(match.score_a, match.score_b)
-  ){
+  if(winner(pickA, pickB) === winner(scoreA, scoreB)){
     pts = 3;
   }
 
-  if(
-    pick.pick_a === match.score_a &&
-    pick.pick_b === match.score_b
-  ){
+  if(pickA === scoreA && pickB === scoreB){
     pts += 1;
   }
 
