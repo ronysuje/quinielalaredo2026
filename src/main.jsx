@@ -1092,18 +1092,43 @@ localStorage.setItem("quiniela_results", JSON.stringify(updated));
   <div className="card">
     <h2>🏆 Tabla de posiciones</h2>
 
-    {[{
-      username: user.username,
-      points: Object.entries(picks).reduce((acc, [id, p]) => {
-        return acc + calcPoints(p, matches.find(m => m.id === Number(id)))
-      }, 0)
-    }]
-      .sort((a,b)=>b.points-a.points)
-      .map((u, i) => (
-        <p key={i}>
-          {i + 1}. {u.username} - {u.points} puntos
-        </p>
-      ))}
+    <div style={{
+  display:"grid",
+  gap:"10px",
+  marginTop:"16px"
+}}>
+  {[{
+    username: user.username,
+    points: Object.entries(picks).reduce((acc, [id, p]) => {
+      return acc + calcPoints(
+        p,
+        matches.find(m => m.id === Number(id))
+      )
+    }, 0)
+  }]
+  .sort((a,b)=>b.points-a.points)
+  .map((u, i) => (
+    <div
+      key={i}
+      style={{
+        display:"flex",
+        justifyContent:"space-between",
+        background:"#f4f4f4",
+        padding:"14px",
+        borderRadius:"12px",
+        fontWeight:"600"
+      }}
+    >
+      <span>
+        {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "⚽"}
+        {" "}
+        {u.username}
+      </span>
+
+      <span>{u.points} pts</span>
+    </div>
+  ))}
+</div>
   </div>
 )}
 
