@@ -993,8 +993,9 @@ function calcPoints(pick, match){
   setUser(null);
   setPicks({});
   setMessage("Sesión cerrada");
-  function loginDemo() {
-    }
+}
+
+function loginDemo() {
   const email = prompt("Escribe tu email:");
   const username = prompt("Escribe tu username/nombre:");
 
@@ -1013,8 +1014,7 @@ function calcPoints(pick, match){
   setUser(newUser);
   setMessage(`Bienvenido ${newUser.username}`);
 }
-  }
-
+  
   if (!user) {
     return (
       <div className="page center">
