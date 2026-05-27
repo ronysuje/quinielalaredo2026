@@ -934,20 +934,25 @@ function winner(a,b){
 }
 
 function calcPoints(pick, match){
-  if(match.score_a === null || match.score_b === null) return 0;
+
+  if(match.score_a === null || match.score_b === null){
+    return 0;
+  }
 
   let pts = 0;
 
-  if(winner(pick.pick_a, pick.pick_b) === winner(match.score_a, match.score_b)){
-    pts += 3;
+  if(
+    winner(pick.pick_a, pick.pick_b) ===
+    winner(match.score_a, match.score_b)
+  ){
+    pts = 3;
   }
 
-  if(Math.abs(pick.pick_a - pick.pick_b) === Math.abs(match.score_a - match.score_b)){
+  if(
+    pick.pick_a === match.score_a &&
+    pick.pick_b === match.score_b
+  ){
     pts += 1;
-  }
-
-  if(pick.pick_a === match.score_a && pick.pick_b === match.score_b){
-    pts += 2;
   }
 
   return pts;
