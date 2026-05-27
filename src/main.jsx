@@ -983,7 +983,7 @@ function calcPoints(pick, match){
     setTimeout(() => setMessage(""), 2500);
   }
 
-  function logout() {
+ function logout() {
   localStorage.removeItem("quiniela_user");
   setUser(null);
   setMessage("Sesión cerrada");
