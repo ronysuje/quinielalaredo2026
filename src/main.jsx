@@ -993,8 +993,6 @@ function calcPoints(pick, match){
   setUser(null);
   setPicks({});
   setMessage("Sesión cerrada");
-  }
-
   function loginDemo() {
   const email = prompt("Escribe tu email:");
   const username = prompt("Escribe tu username/nombre:");
