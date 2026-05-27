@@ -943,7 +943,7 @@ function calcPoints(pick, match){
   if(match.score_a === null || match.score_b === null){
     return 0;
   }
-
+  
   let pts = 0;
 
   if(winner(pickA, pickB) === winner(scoreA, scoreB)){
