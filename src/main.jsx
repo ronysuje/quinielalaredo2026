@@ -911,7 +911,7 @@ if (savedUser) {
           };
         });
         setPicks(map);
-        return;
+        //return;
       }
     }
 
