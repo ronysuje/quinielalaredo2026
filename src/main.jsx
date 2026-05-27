@@ -1070,12 +1070,7 @@ function calcPoints(pick, match){
     {[{
       username: user.username,
       points: Object.entries(picks).reduce((acc, [id, p]) => {
-  return acc + calcPoints(
-    p,
-    matches.find(m => m.id === Number(id))
-  )
-}, 0)
-       return acc + calcPoints(p, matches.find(m => m.id === Number(id)))
+        return acc + calcPoints(p, matches.find(m => m.id === Number(id)))
       }, 0)
     }]
       .sort((a,b)=>b.points-a.points)
