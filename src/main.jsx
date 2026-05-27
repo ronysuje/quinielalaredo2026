@@ -928,7 +928,30 @@ function App() {
       },
     }));
   }
+function winner(a,b){
+  if(a === b) return "draw";
+  return a > b ? "a" : "b";
+}
 
+function calcPoints(pick, match){
+  if(match.score_a === null || match.score_b === null) return 0;
+
+  let pts = 0;
+
+  if(winner(pick.pick_a, pick.pick_b) === winner(match.score_a, match.score_b)){
+    pts += 3;
+  }
+
+  if(Math.abs(pick.pick_a - pick.pick_b) === Math.abs(match.score_a - match.score_b)){
+    pts += 1;
+  }
+
+  if(pick.pick_a === match.score_a && pick.pick_b === match.score_b){
+    pts += 2;
+  }
+
+  return pts;
+}
   async function savePick(match) {
     const pick = picks[match.id] || { pick_a: 0, pick_b: 0 };
 
