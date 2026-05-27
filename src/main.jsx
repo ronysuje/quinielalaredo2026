@@ -914,8 +914,8 @@ function App() {
       }
     }
 
-    const saved = localStorage.getItem("quiniela_picks");
-    if (saved) setPicks(JSON.parse(saved));
+   const savedResults = localStorage.getItem("quiniela_results");
+if (savedResults) setMatches(JSON.parse(savedResults));
   }
 
   function updatePick(matchId, side, value) {
@@ -1063,7 +1063,9 @@ function calcPoints(pick, match){
     style={{ width:"55px" }}
     onChange={(e) => {
       m.score_a = Number(e.target.value)
-      setMatches([...matches])
+     const updated = [...matches];
+setMatches(updated);
+localStorage.setItem("quiniela_results", JSON.stringify(updated));
     }}
   />
 
@@ -1073,7 +1075,9 @@ function calcPoints(pick, match){
     style={{ width:"55px" }}
     onChange={(e) => {
       m.score_b = Number(e.target.value)
-      setMatches([...matches])
+     const updated = [...matches];
+setMatches(updated);
+localStorage.setItem("quiniela_results", JSON.stringify(updated));
     }}
   />
 </div>
