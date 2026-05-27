@@ -993,11 +993,24 @@ function calcPoints(pick, match){
   }
 
   function loginDemo() {
-    setUser({
-      id: "admin-demo",
-      email: "admin@quiniela.com",
-      username: "Admin",
-    });
+  const email = prompt("Escribe tu email:");
+  const username = prompt("Escribe tu username/nombre:");
+
+  if (!email || !username) {
+    setMessage("Email y username son requeridos");
+    return;
+  }
+
+  const newUser = {
+    id: email.toLowerCase().trim(),
+    email: email.toLowerCase().trim(),
+    username: username.trim(),
+  };
+
+  localStorage.setItem("quiniela_user", JSON.stringify(newUser));
+  setUser(newUser);
+  setMessage(`Bienvenido ${newUser.username}`);
+}
   }
 
   if (!user) {
