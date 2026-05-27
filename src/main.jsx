@@ -1065,9 +1065,23 @@ function loginDemo() {
 
 <h2>{m.team_a} vs {m.team_b}</h2>
                   <div className="score">
-                  <input type="number" value={pick.pick_a} onChange={(e) => updatePick(m.id, "pick_a", e.target.value)} />
+                  <input
+  type="number"
+  min="0"
+  max="20"
+  style={{ width:"70px", height:"50px", fontSize:"24px", textAlign:"center" }}
+  value={pick.pick_a}
+  onChange={(e) => updatePick(m.id, "pick_a", e.target.value)}
+/>
                   <span>-</span>
-                  <input type="number" value={pick.pick_b} onChange={(e) => updatePick(m.id, "pick_b", e.target.value)} />
+                  <input
+  type="number"
+  min="0"
+  max="20"
+  style={{ width:"70px", height:"50px", fontSize:"24px", textAlign:"center" }}
+  value={pick.pick_b}
+  onChange={(e) => updatePick(m.id, "pick_b", e.target.value)}
+/>
                 </div>
                 <button onClick={() => savePick(m)}>Guardar pick</button>
                 <p>Resultado: {m.score_a ?? "—"} - {m.score_b ?? "—"}</p>
