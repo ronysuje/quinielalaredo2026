@@ -989,10 +989,10 @@ function calcPoints(pick, match){
   }
 
  function logout() {
-  localStorage.removeItem("quiniela_user");
+  localStorage.clear();
   setUser(null);
+  setPicks({});
   setMessage("Sesión cerrada");
-}
   }
 
   function loginDemo() {
