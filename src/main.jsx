@@ -1163,4 +1163,5 @@ localStorage.setItem("quiniela_results", JSON.stringify(updated));
       )}
     </div>
   );
+  }
 createRoot(document.getElementById("root")).render(<App />);
