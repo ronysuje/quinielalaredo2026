@@ -984,8 +984,10 @@ function calcPoints(pick, match){
   }
 
   function logout() {
-    setUser(null);
-    setMessage("Sesión cerrada");
+  localStorage.removeItem("quiniela_user");
+  setUser(null);
+  setMessage("Sesión cerrada");
+}
   }
 
   function loginDemo() {
