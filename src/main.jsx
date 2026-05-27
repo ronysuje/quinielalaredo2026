@@ -888,6 +888,11 @@ function App() {
   }, []);
 
   async function loadData() {
+    const savedUser = localStorage.getItem("quiniela_user");
+if (savedUser) {
+  setUser(JSON.parse(savedUser));
+}
+    const activeUser = savedUser ? JSON.parse(savedUser) : user;
     if (supabase) {
       const { data: matchData } = await supabase.from("matches").select("*").order("id");
       if (matchData?.length) setMatches(matchData);
@@ -895,7 +900,7 @@ function App() {
       const { data: pickData } = await supabase
         .from("picks")
         .select("*")
-        .eq("user_id", user.id);
+        .eq("user_id", activeUser?.id);
 
       if (pickData?.length) {
         const map = {};
