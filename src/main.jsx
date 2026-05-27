@@ -1058,7 +1058,7 @@ function calcPoints(pick, match){
                 </div>
                 <button onClick={() => savePick(m)}>Guardar pick</button>
                 <p>Resultado: {m.score_a ?? "—"} - {m.score_b ?? "—"}</p>
-                <p>Puntos: 0</p>
+                <p>Puntos: {calcPoints(pick, m)}</p>
               </div>
             );
           })}
