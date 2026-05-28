@@ -1098,8 +1098,7 @@ border:"2px solid #ddd", textAlign:"center" }}
                 <div style={{ marginTop:"8px", display:"flex", gap:"6px" }}>
   {user?.email === "ronysuje@hotmail.com" && (
   <>
-  </>
-                  <input
+   <input
     type="number"
     placeholder="R1"
     style={{ width:"55px" }}
