@@ -1086,7 +1086,10 @@ function loginDemo() {
                 <button onClick={() => savePick(m)}>Guardar pick</button>
                 <p>Resultado: {m.score_a ?? "—"} - {m.score_b ?? "—"}</p>
                 <div style={{ marginTop:"8px", display:"flex", gap:"6px" }}>
-  <input
+  {user?.email === "ronysuje@hotmail.com" && (
+  <>
+  </>
+                  <input
     type="number"
     placeholder="R1"
     style={{ width:"55px" }}
@@ -1109,6 +1112,8 @@ setMatches(updated);
 localStorage.setItem("quiniela_results", JSON.stringify(updated));
     }}
   />
+                </>                
+   )}               
 </div>
                 <p>Puntos: {calcPoints(pick, m)}</p>
               </div>
