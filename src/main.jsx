@@ -1069,7 +1069,12 @@ function loginDemo() {
   type="number"
   min="0"
   max="20"
-  style={{ width:"70px", height:"50px", fontSize:"24px", textAlign:"center" }}
+  style={{ width:"80px",
+height:"60px",
+fontSize:"28px",
+fontWeight:"700",
+borderRadius:"14px",
+border:"2px solid #ddd", textAlign:"center" }}
   value={pick.pick_a}
   onChange={(e) => updatePick(m.id, "pick_a", e.target.value)}
 />
@@ -1078,7 +1083,12 @@ function loginDemo() {
   type="number"
   min="0"
   max="20"
-  style={{ width:"70px", height:"50px", fontSize:"24px", textAlign:"center" }}
+  style={{ width:"80px",
+height:"60px",
+fontSize:"28px",
+fontWeight:"700",
+borderRadius:"14px",
+border:"2px solid #ddd", textAlign:"center" }}
   value={pick.pick_b}
   onChange={(e) => updatePick(m.id, "pick_b", e.target.value)}
 />
